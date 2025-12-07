@@ -2,12 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# 读取数据文件
-file_path = 'C109.txt'  # 请替换为实际文件路径
+file_path = "../data/c101.txt" 
 with open(file_path, 'r') as file:
     data0 = file.read()
 
-# 将数据转换为DataFrame
 data = []
 for line in data0.strip().split('\n'):
     data.append(line.split())
@@ -15,7 +13,6 @@ for line in data0.strip().split('\n'):
 columns = ["CUST", "XCOORD.", 'YCOORD.', 'DEMAND', 'READY', 'DUE', 'SERVICE']
 df = pd.DataFrame(data[9:], columns=columns)
 
-# 将字符型列转换为数字
 numeric_cols = ['CUST', 'XCOORD.', 'YCOORD.', 'DEMAND', 'READY', 'DUE', 'SERVICE']
 df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 df['sum'] = df['DUE'] - df['READY']
