@@ -13,83 +13,53 @@ import glob
 
 
 def resolve_file_path(input_str):
-    """
-    Resolve the file path based on the input string.
-    
-    Parameters:
-    -----------
-    input_str : str
-        Input string (e.g., 'n11', 'r101', or full path)
-    
-    Returns:
-    --------
-    file_path : str
-        Resolved file path
-    """
-    # If it's already a full path, return it
-    if os.path.exists(input_str):
-        return input_str
-    
+
     # Check if it starts with 'n' (instance files)
     if input_str.startswith('i'):
-        pattern = f"../data/instance/{input_str}.txt"
+        pattern = f"data/instance/{input_str}.txt"
         matches = glob.glob(pattern)
         if matches:
             return matches[0]
         else:
             raise FileNotFoundError(f"No instance file found matching '{input_str}'")
     
-    # Check if it's a Solomon benchmark (like r101, c101, rc101)
-    else:
-        file_path = f"../data/solomon/{input_str}.txt"
+    elif input_str.startswith('r') or input_str.startswith('c'):
+        file_path = f"data/solomon/{input_str}.txt"
         if os.path.exists(file_path):
             return file_path
         else:
-            # Try lowercase
-            file_path_lower = f"../data/solomon/{input_str.lower()}.txt"
-            if os.path.exists(file_path_lower):
-                return file_path_lower
-            else:
-                raise FileNotFoundError(f"Solomon benchmark file '{input_str}' not found")
+            raise FileNotFoundError(f"Solomon benchmark file '{input_str}' not found")
 
 
 def read_solomon_file(file_path):
-    """
-    Read a VRPTW instance file in Solomon format.
-    
-    Parameters:
-    -----------
-    file_path : str
-        Path to the Solomon format file
-    
-    Returns:
-    --------
-    df : pd.DataFrame
-        DataFrame containing the instance data
-    """
     with open(file_path, 'r') as f:
         lines = f.readlines()
-    
-    # Find the start of the customer data
     start_idx = None
     for i, line in enumerate(lines):
         if 'CUST NO.' in line:
-            start_idx = i + 2  # Skip header and empty line
+            start_idx = i + 2 
             break
     
     if start_idx is None:
         raise ValueError("Could not find customer data in file")
     
-    # Parse data
     nodes = []
+    seen_ids = set()  # 使用集合来跟踪已见过的客户编号，避免重复
+    
     for line in lines[start_idx:]:
         line = line.strip()
         if not line:
             continue
         parts = re.split(r'\s+', line)
         if len(parts) >= 7:
+            cust_no = int(parts[0])
+            # 跳过重复的节点
+            if cust_no in seen_ids:
+                continue
+            seen_ids.add(cust_no)
+            
             nodes.append({
-                'CUST NO.': int(parts[0]),
+                'CUST NO.': cust_no,
                 'XCOORD.': int(parts[1]),
                 'YCOORD.': int(parts[2]),
                 'DEMAND': int(parts[3]),
@@ -103,23 +73,6 @@ def read_solomon_file(file_path):
 
 
 def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=None, routes=None):
-    """
-    Visualize a VRPTW instance.
-    
-    Parameters:
-    -----------
-    df_all : pd.DataFrame
-        DataFrame containing the instance data
-    output_file : str, optional
-        Path to save the plot. If None, plot is displayed but not saved.
-    x_range : tuple, optional
-        Range for x axis. If None, will be auto-calculated from data.
-    y_range : tuple, optional
-        Range for y axis. If None, will be auto-calculated from data.
-    routes : list of lists, optional
-        List of routes, where each route is a list of customer IDs.
-        If provided, will draw lines connecting customers in each route.
-    """
     sns.set_style("whitegrid")
     
     # Auto-calculate ranges if not provided
@@ -155,14 +108,13 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
         ax=ax
     )
     
-    # Post-process to make markers hollow and set different line widths
     for i, collection in enumerate(ax.collections):
         colors = collection.get_facecolors()
         collection.set_edgecolors(colors)
         collection.set_facecolors('white')
-        if i == 1:  # Customer markers
+        if i == 1:  # Customer
             collection.set_linewidth(6)
-        else:  # Depot marker
+        else:  # Depot 
             collection.set_linewidth(4)
     
     # Draw routes if provided
@@ -173,13 +125,10 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
                 continue
             
             route_color = colors_list[route_idx % len(colors_list)]
-            
-            # Draw lines connecting customers in the route
+
             for i in range(len(route) - 1):
                 node_from = route[i]
                 node_to = route[i + 1]
-                
-                # Get coordinates
                 from_row = df_all[df_all['CUST NO.'] == node_from]
                 to_row = df_all[df_all['CUST NO.'] == node_to]
                 
@@ -190,16 +139,24 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
                     ax.plot(x_coords, y_coords, color=route_color, linewidth=2, 
                            alpha=0.7, zorder=1, label=f'Route {route_idx + 1}' if i == 0 else '')
     
-    # Annotate nodes
+    # Annotate nodes - 使用set避免重复标注
+    annotated_nodes = set()
     for i in range(df_all.shape[0]):
         row = df_all.iloc[i]
+        cust_no = int(row['CUST NO.'])
+        
+        # 跳过已经标注过的节点
+        if cust_no in annotated_nodes:
+            continue
+        annotated_nodes.add(cust_no)
+        
         color = palette[row['type']]
         
         # Plot ID inside the marker
         ax.text(
             row['XCOORD.'], 
             row['YCOORD.'], 
-            str(int(row['CUST NO.'])), 
+            str(cust_no), 
             horizontalalignment='center', 
             verticalalignment='center', 
             size='large', 
@@ -209,7 +166,6 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
             clip_on=False
         )
         
-        # Plot details next to the marker
         if row['type'] == 'Depot':
             ax.text(
                 row['XCOORD.'] + 0.35, 
@@ -238,21 +194,17 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
                 clip_on=False
             )
     
-    # Beautify the grid and layout
     ax.set_title('VRPTW Instance Visualization', fontsize=20, weight='bold', pad=20)
     ax.set_xlabel('X Coordinate', fontsize=14)
     ax.set_ylabel('Y Coordinate', fontsize=14)
     
-    # Set view range
     ax.set_xlim(x_range[0] - 0.5, x_range[1] + 0.5)
     ax.set_ylim(y_range[0] - 0.5, y_range[1] + 0.5)
     ax.set_aspect('equal', adjustable='box')
     
-    # Customize grid
     ax.set_xticks(range(x_range[0], x_range[1] + 1))
     ax.set_yticks(range(y_range[0], y_range[1] + 1))
     
-    # Draw grid lines
     ax.grid(False)
     for x in range(x_range[0], x_range[1] + 1):
         ax.axvline(x=x, ymin=(0.5 - y_range[0]) / (y_range[1] - y_range[0] + 1), 
@@ -263,13 +215,11 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
                    xmax=(x_range[1] + 0.5 - x_range[0]) / (x_range[1] - x_range[0] + 1), 
                    linestyle='-', alpha=0.5, color='black', linewidth=1, zorder=1)
     
-    # Hide spines
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
     
-    # Fix legend
     handles, labels = ax.get_legend_handles_labels()
     unique = dict(zip(labels, handles))
     ax.legend(unique.values(), unique.keys(), title='Location Type', 
@@ -294,8 +244,8 @@ def visualize_vrptw_instance(df_all, output_file=None, x_range=None, y_range=Non
 
 if __name__ == '__main__':
     # Example usage
-    input_str = input("Please enter the instance name (e.g., 'n11', 'r101') or full path: ")
-    
+    input_str = input("Please enter the file name (e.g., 'i11', 'r101')")
+
     # Resolve file path
     try:
         file_path = resolve_file_path(input_str)
@@ -315,5 +265,5 @@ if __name__ == '__main__':
     print(df_all)
     
     n = len(df_all)
-    output_file = f'plot/vrptw_instance_{os.path.basename(file_path).replace(".txt", "")}.png'
-    visualize_vrptw_instance(df_all, output_file=output_file, routes=routes)
+    output_file = f'plots/instance{n}.png'
+    visualize_vrptw_instance(df_all, output_file=output_file, routes=None)

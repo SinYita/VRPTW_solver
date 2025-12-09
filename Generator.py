@@ -12,29 +12,6 @@ import os
 
 def generate_vrptw_instance(n, vehicle_capacity, x_range=(0, 8), y_range=(0, 8), 
                            d_range=(1, 15), time_range=(0, 10)):
-    """
-    Generate a random VRPTW instance.
-    
-    Parameters:
-    -----------
-    n : int
-        Total number of nodes (including depot)
-    vehicle_capacity : int
-        Capacity of each vehicle
-    x_range : tuple
-        Range for x coordinates (min, max)
-    y_range : tuple
-        Range for y coordinates (min, max)
-    d_range : tuple
-        Range for customer demand (min, max)
-    time_range : tuple
-        Range for time windows (min, max)
-    
-    Returns:
-    --------
-    df_all : pd.DataFrame
-        DataFrame containing all nodes
-    """
     n_customers = n - 1
     nodes = []
     used_coordinates = set()
@@ -49,13 +26,11 @@ def generate_vrptw_instance(n, vehicle_capacity, x_range=(0, 8), y_range=(0, 8),
         'YCOORD.': depot_y,
         'DEMAND': 0,
         'READY TIME': 0,
-        'DUE DATE': time_range[1],
+        'DUE DATE': 100,
         'SERVICE TIME': 0
     })
     
-    # 2. Generate Customers
     for i in range(1, n_customers + 1):
-        # Generate unique coordinates
         while True:
             x = int(np.random.randint(x_range[0], x_range[1] + 1))
             y = int(np.random.randint(y_range[0], y_range[1] + 1))
@@ -64,8 +39,6 @@ def generate_vrptw_instance(n, vehicle_capacity, x_range=(0, 8), y_range=(0, 8),
                 break
         
         d = int(np.random.randint(d_range[0], d_range[1] + 1))
-        
-        # Time window generation
         a = int(np.random.randint(time_range[0], time_range[1]))
         duration = int(np.random.randint(1, 11))
         b = int(min(a + duration, time_range[1]))
@@ -84,21 +57,7 @@ def generate_vrptw_instance(n, vehicle_capacity, x_range=(0, 8), y_range=(0, 8),
     return df_all
 
 
-def save_to_solomon_format(df_all, n, vehicle_capacity, output_dir='../data/instance'):
-    """
-    Save the generated instance to a file in Solomon format.
-    
-    Parameters:
-    -----------
-    df_all : pd.DataFrame
-        DataFrame containing all nodes
-    n : int
-        Total number of nodes
-    vehicle_capacity : int
-        Capacity of each vehicle
-    output_dir : str
-        Directory to save the output file
-    """
+def save_to_solomon_format(df_all, n, vehicle_capacity, output_dir='data/instance'):
     n_customers = n - 1
     
     if not os.path.exists(output_dir):

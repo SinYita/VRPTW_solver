@@ -1,0 +1,154 @@
+Data Type: rc101
+Node Num: 52
+Customer Num: 50
+Vehicle Num: 25
+Vehicle Capacity: 200.0
+Time Limit: 3.0 seconds
+Set parameter Username
+Set parameter LicenseID to value 2736013
+Academic license - for non-commercial use only - expires 2026-11-11
+Set parameter MIPGap to value 0.05
+-------------------- Solved (Time Limit Reached) --------------------
+Time consumed: 3.0249037742614746 s
+Total Distance: 1175.8226223343677
+Vehicle Numbers: 11
+Plot saved to plots/solution_50.png
+Route-1 : [0, 18, 0] , distance: 90.35485598461214 , load: 20.0
+Route-2 : [0, 36, 35, 37, 43, 0] , distance: 97.13634964890721 , load: 90.0
+Route-3 : [0, 22, 20, 0] , distance: 72.0570962859162 , load: 50.0
+Route-4 : [0, 11, 14, 46, 8, 4, 0] , distance: 120.74888328315456 , load: 110.0
+Route-5 : [0, 31, 29, 30, 50, 34, 26, 32, 0] , distance: 157.69609430808282 , load: 140.0
+Route-6 : [0, 45, 5, 3, 1, 0] , distance: 83.81479005754596 , load: 60.0
+Route-7 : [0, 33, 28, 27, 49, 24, 0] , distance: 163.7439514553563 , load: 60.0
+Route-8 : [0, 19, 23, 21, 25, 48, 0] , distance: 105.49751554465526 , load: 110.0
+Route-9 : [0, 2, 6, 7, 0] , distance: 73.1611826608261 , load: 70.0
+Route-10 : [0, 12, 47, 15, 16, 9, 10, 13, 17, 0] , distance: 120.13130580975941 , load: 150.0
+Route-11 : [0, 39, 42, 44, 40, 38, 41, 0] , distance: 91.48059729555126 , load: 110.0
+
+
+Data Type: rc101
+Node Num: 52
+Customer Num: 50
+Vehicle Num: 25
+Vehicle Capacity: 200.0
+Time Limit: 5.0 seconds
+Set parameter Username
+Set parameter LicenseID to value 2736013
+Academic license - for non-commercial use only - expires 2026-11-11
+Set parameter MIPGap to value 0.05
+-------------------- Solved (Time Limit Reached) --------------------
+Time consumed: 5.027827024459839 s
+Total Distance: 1022.0470668416452
+Vehicle Numbers: 10
+Plot saved to plots/solution_50.png
+Route-1 : [0, 22, 49, 20, 24, 0] , distance: 80.6626475613802 , load: 70.0
+Route-2 : [0, 36, 35, 37, 43, 0] , distance: 97.13634964890721 , load: 90.0
+Route-3 : [0, 47, 14, 46, 8, 4, 0] , distance: 122.71935795330243 , load: 80.0
+Route-4 : [0, 33, 30, 28, 31, 29, 27, 26, 0] , distance: 138.2357263908113 , load: 110.0
+Route-5 : [0, 45, 5, 3, 1, 0] , distance: 83.81479005754596 , load: 60.0
+Route-6 : [0, 12, 11, 16, 15, 9, 10, 13, 17, 0] , distance: 120.38494705431705 , load: 180.0
+Route-7 : [0, 19, 18, 23, 21, 25, 48, 0] , distance: 110.47955611435691 , load: 130.0
+Route-8 : [0, 50, 32, 34, 0] , distance: 103.97191210464666 , load: 70.0
+Route-9 : [0, 2, 6, 7, 0] , distance: 73.1611826608261 , load: 70.0
+Route-10 : [0, 39, 42, 44, 40, 38, 41, 0] , distance: 91.48059729555126 , load: 110.0
+
+
+
+Data Type: rc101
+Node Num: 52
+Customer Num: 50
+Vehicle Num: 25
+Vehicle Capacity: 200.0
+Time Limit: 7.0 seconds
+Set parameter Username
+Set parameter LicenseID to value 2736013
+Academic license - for non-commercial use only - expires 2026-11-11
+Set parameter MIPGap to value 0.05
+-------------------- Solved (Time Limit Reached) --------------------
+Time consumed: 7.0962231159210205 s
+Total Distance: 1014.4053853365591
+Vehicle Numbers: 10
+Plot saved to plots/solution_50.png
+Route-1 : [0, 22, 49, 20, 24, 0] , distance: 80.6626475613802 , load: 70.0
+Route-2 : [0, 36, 35, 37, 43, 0] , distance: 97.13634964890721 , load: 90.0
+Route-3 : [0, 47, 14, 46, 8, 4, 0] , distance: 122.71935795330243 , load: 80.0
+Route-4 : [0, 50, 34, 0] , distance: 95.77535899667026 , load: 60.0
+Route-5 : [0, 33, 30, 28, 31, 29, 27, 26, 32, 0] , distance: 138.79059799370168 , load: 120.0
+Route-6 : [0, 45, 5, 3, 1, 0] , distance: 83.81479005754596 , load: 60.0
+Route-7 : [0, 12, 11, 16, 15, 9, 10, 13, 17, 0] , distance: 120.38494705431705 , load: 180.0
+Route-8 : [0, 19, 18, 23, 21, 25, 48, 0] , distance: 110.47955611435691 , load: 130.0
+Route-9 : [0, 2, 6, 7, 0] , distance: 73.1611826608261 , load: 70.0
+Route-10 : [0, 39, 42, 44, 40, 38, 41, 0] , distance: 91.48059729555126 , load: 110.0
+
+
+Data Type: rc101
+Node Num: 52
+Customer Num: 50
+Vehicle Num: 25
+Vehicle Capacity: 200.0
+Time Limit: 10.0 seconds
+Set parameter Username
+Set parameter LicenseID to value 2736013
+Academic license - for non-commercial use only - expires 2026-11-11
+Set parameter MIPGap to value 0.05
+-------------------- Solved (Time Limit Reached) --------------------
+Time consumed: 10.02731704711914 s
+Total Distance: 965.612099817197
+Vehicle Numbers: 9
+Plot saved to plots/solution_50.png
+Route-1 : [0, 2, 45, 5, 6, 7, 0] , distance: 89.6393315772922 , load: 100.0
+Route-2 : [0, 47, 14, 46, 8, 3, 1, 4, 0] , distance: 136.39275103221053 , load: 110.0
+Route-3 : [0, 50, 34, 0] , distance: 95.77535899667026 , load: 60.0
+Route-4 : [0, 33, 30, 28, 31, 29, 27, 26, 32, 0] , distance: 138.79059799370168 , load: 120.0
+Route-5 : [0, 42, 44, 43, 0] , distance: 76.6198851918164 , load: 40.0
+Route-6 : [0, 12, 11, 16, 15, 9, 10, 13, 17, 0] , distance: 120.38494705431705 , load: 180.0
+Route-7 : [0, 19, 18, 23, 21, 48, 25, 0] , distance: 107.71205928682316 , load: 130.0
+Route-8 : [0, 49, 22, 24, 20, 0] , distance: 82.7152427422611 , load: 70.0
+Route-9 : [0, 39, 36, 40, 38, 41, 35, 37, 0] , distance: 117.58192594210433 , load: 160.0
+
+
+Data Type: rc101
+Node Num: 52
+Customer Num: 50
+Vehicle Num: 25
+Vehicle Capacity: 200.0
+Time Limit: 15.0 seconds
+Set parameter Username
+Set parameter LicenseID to value 2736013
+Academic license - for non-commercial use only - expires 2026-11-11
+Set parameter MIPGap to value 0.05
+-------------------- Solved (Time Limit Reached) --------------------
+Time consumed: 15.031761884689331 s
+Total Distance: 827.9944304647053
+Vehicle Numbers: 8
+Plot saved to plots/solution_50.png
+Route-1 : [0, 2, 45, 5, 3, 1, 0] , distance: 84.16481902009879 , load: 90.0
+Route-2 : [0, 50, 0] , distance: 70.68238818828917 , load: 30.0
+Route-3 : [0, 33, 30, 28, 31, 29, 27, 26, 32, 34, 0] , distance: 140.53155654687333 , load: 150.0
+Route-4 : [0, 11, 14, 12, 47, 16, 15, 9, 10, 13, 17, 0] , distance: 128.738903503374 , load: 200.0
+Route-5 : [0, 6, 7, 8, 46, 4, 0] , distance: 82.35716436533332 , load: 100.0
+Route-6 : [0, 19, 18, 23, 21, 48, 25, 24, 0] , distance: 107.93253639096284 , load: 140.0
+Route-7 : [0, 22, 49, 20, 0] , distance: 76.6626475613802 , load: 60.0
+Route-8 : [0, 39, 36, 42, 44, 41, 38, 40, 43, 35, 37, 0] , distance: 136.92441488839347 , load: 200.0
+
+Data Type: rc101
+Node Num: 52
+Customer Num: 50
+Vehicle Num: 25
+Vehicle Capacity: 200.0
+Time Limit: 30.0 seconds
+Set parameter Username
+Set parameter LicenseID to value 2736013
+Academic license - for non-commercial use only - expires 2026-11-11
+Set parameter MIPGap to value 0.05
+-------------------- Solved (Time Limit Reached) --------------------
+Time consumed: 30.03964900970459 s
+Total Distance: 709.8576242690763
+Vehicle Numbers: 6
+Plot saved to plots/solution_50.png
+Route-1 : [0, 14, 12, 47, 16, 15, 11, 9, 10, 13, 17, 0] , distance: 126.68836511445355 , load: 200.0
+Route-2 : [0, 42, 39, 36, 40, 44, 38, 41, 37, 35, 43, 0] , distance: 133.71018523731618 , load: 200.0
+Route-3 : [0, 19, 18, 21, 23, 22, 20, 49, 48, 25, 24, 0] , distance: 126.1305754181484 , load: 200.0
+Route-4 : [0, 33, 30, 31, 29, 27, 28, 26, 32, 34, 0] , distance: 138.95938420428578 , load: 150.0
+Route-5 : [0, 50, 0] , distance: 70.68238818828917 , load: 30.0
+Route-6 : [0, 2, 45, 5, 8, 7, 6, 46, 3, 1, 4, 0] , distance: 113.68672610658294 , load: 190.0
