@@ -53,14 +53,14 @@ def readData(path, customerNum):
                 data.serviceTime.append(float(s[7]))
     data.nodeNum = len(data.corX) + 1
     data.customerNum = data.nodeNum - 2
-    # 回路
+    # add a virual point to realize closed path
     data.corX.append(data.corX[0])
     data.corY.append(data.corY[0])
     data.demand.append(data.demand[0])
     data.readyTime.append(data.readyTime[0])
     data.dueTime.append(data.dueTime[0])
     data.serviceTime.append(data.serviceTime[0])
-    # 计算距离矩阵
+    # distance matrix
     data.distanceMatrix = np.zeros((data.nodeNum, data.nodeNum))
     for i in range(data.nodeNum):
         for j in range(i + 1, data.nodeNum):
@@ -136,21 +136,19 @@ def print_solution(solution, data):
 
 
 def solve(data, M, time_limit=None):
-    # 建立模型
     model = Model('VRPTW')
     
-    # 模型设置
+    # configuration
     model.setParam('MIPGap', 0.05)
     model.setParam('OutputFlag', 0)
     if time_limit is not None:
         model.setParam('TimeLimit', time_limit)
     
-    # Step1: 建立变量索引集合
     X_set = []
     S_set = []
     k_set = [k for k in range(data.vehicleNum)]
-    i_set = [i for i in range(data.nodeNum - 1)]  # 不含虚拟终点车场
-    j_set = [j for j in range(data.nodeNum)]  # 含虚拟终点车场
+    i_set = [i for i in range(data.nodeNum - 1)]  # start point
+    j_set = [j for j in range(data.nodeNum)]  # end point
     
     for k in k_set:
         for i in i_set:
@@ -165,38 +163,38 @@ def solve(data, M, time_limit=None):
     X_set_tplst = tuplelist(X_set)
     S_set_tplst = tuplelist(S_set)
     
-    # Step2: 定义变量
+    # variable
     x = model.addVars(X_set_tplst, vtype=GRB.BINARY, name='x')
     s = model.addVars(S_set_tplst, vtype=GRB.CONTINUOUS, lb=0.0, name='s')
     model.update()
     
-    # 定义目标函数
+    # objectve 
     model.setObjective(
         quicksum(x[i, j, k] * data.distanceMatrix[i][j] for i, j, k in X_set_tplst),
         sense=GRB.MINIMIZE
     )
     
-    # 定义约束条件:
-    # 1. 客户点服务一次约束
+    # constraint 1
+    # each customer can only be visit once.
     customer_ids = [i for i in range(1, data.nodeNum - 1)]
     model.addConstrs(
         (quicksum(x[i, j, k] for i, j, k in X_set_tplst.select(I, '*', '*')) == 1 for I in customer_ids),
         'customer_once'
     )
     
-    # 2. 起点流出约束
+    # 2. each car should leave the depot once.
     model.addConstrs(
         (quicksum(x[i, j, k] for i, j, k in X_set_tplst.select(0, '*', K)) == 1 for K in k_set),
         'start_depot'
     )
     
-    # 3. 终点流入约束
+    # 3. each car can only return to the virtual end once.
     model.addConstrs(
         (quicksum(x[i, j, k] for i, j, k in X_set_tplst.select('*', data.nodeNum - 1, K)) == 1 for K in k_set),
         'end_depot'
     )
     
-    # 4. 流平衡约束
+    # 4. each of the customer should have the same in and out
     model.addConstrs(
         (quicksum(x[i, h, k] for i, h, k in X_set_tplst.select('*', H, K)) - 
          quicksum(x[h, j, k] for h, j, k in X_set_tplst.select(H, '*', K)) == 0 
@@ -204,14 +202,14 @@ def solve(data, M, time_limit=None):
         'flow_balance'
     )
     
-    # 5. 时间窗约束（1）
+    # 5. arrival time should be limit
     model.addConstrs(
         (s[i, k] + data.distanceMatrix[i][j] - M * (1 - x[i, j, k]) <= s[j, k] 
          for i, j, k in X_set_tplst),
         'time_window_constraint'
     )
     
-    # 6. 时间窗约束（2）
+    # 6. the arrival time should fall in the tw.
     model.addConstrs(
         (s[i, k] >= data.readyTime[i] for i, k in S_set_tplst),
         'ready_time'
@@ -221,7 +219,7 @@ def solve(data, M, time_limit=None):
         'due_time'
     )
     
-    # 7. 容量约束
+    # 7. the capacity of each car should be limited.
     model.addConstrs(
         (quicksum(data.demand[i] * x[i, j, k] for i, j, k in X_set_tplst.select('*', '*', K)) <= data.capacity 
          for K in k_set),
@@ -259,7 +257,7 @@ def solve(data, M, time_limit=None):
 if __name__ == '__main__':
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description='VRPTW Solver')
-    parser.add_argument('--data_type', type=str, default='i9', 
+    parser.add_argument('--data_type', type=str, default='c101', 
                         help='Data type (e.g., i9, c101, r101, rc101)')
     parser.add_argument('--customerNum', type=int, default=None,
                         help='Number of customers to use (default: use all)')
